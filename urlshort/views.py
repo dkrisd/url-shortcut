@@ -1,6 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 from .models import Url
+from .forms import LoginForm
 # from django.core import serializers
 
 
@@ -11,7 +14,8 @@ def all_url_shortcuts(request):
     context = {
         'item_list': items,
     }
-    return HttpResponse(template.render(context, request))
+    # return HttpResponse(template.render(context, request))
+    return render(request, "index.html", context)
 
 
 def redirect_shortcut(request, shortcut):
@@ -21,3 +25,41 @@ def redirect_shortcut(request, shortcut):
         return HttpResponseRedirect(item.url)
     except Url.DoesNotExist:
         raise Http404
+
+def login_page(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirect to a success page.
+                context = {
+                    'auth_result': "success",
+                }
+                return render(request, "login.html", context)
+                
+            else:
+                # Return an 'invalid login' error message.
+                context = {
+                    'auth_result': "invalid",
+                }
+                return render(request, "login.html", context)
+    else:
+        if request.user.is_authenticated:
+            # Redirect to a success page.
+            context = {
+                'auth_result': "already_logged",
+            }
+            return render(request, "login.html", context)
+        else:
+            # Show login form for AnonymousUser.
+            # context = {
+            #     'auth_result': "",
+            # }
+            # return render(request, "login.html", context)
+            form = LoginForm()
+            return render(request, 'login.html', {'form': form})
+        
