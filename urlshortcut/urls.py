@@ -20,6 +20,7 @@ from urlshort import views
 urlpatterns = [
     path('', views.all_url_shortcuts),
     path('login', views.login_page),
+    path('create-url', views.create_url),
     path('admin', admin.site.urls),
     path('<shortcut>', views.redirect_shortcut),
 

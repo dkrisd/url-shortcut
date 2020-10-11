@@ -3,7 +3,7 @@ from django.template import loader
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from .models import Url
-from .forms import LoginForm
+from .forms import LoginForm, CreateUrlForm
 # from django.core import serializers
 
 
@@ -62,4 +62,15 @@ def login_page(request):
             # return render(request, "login.html", context)
             form = LoginForm()
             return render(request, 'login.html', {'form': form})
-        
+
+
+def create_url(request):
+    form = CreateUrlForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        form = CreateUrlForm()
+
+    context = {
+        'form' : form
+    }
+    return render(request, "create-url.html", context)
