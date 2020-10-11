@@ -8,7 +8,6 @@ class LoginForm(forms.Form):
 
 
 class CreateUrlForm(forms.ModelForm):
-
     url = forms.URLField(
         widget=forms.Textarea(
             attrs={
@@ -19,7 +18,6 @@ class CreateUrlForm(forms.ModelForm):
             }
         )
     )
-
     url_shortcut = forms.CharField(
         widget=forms.Textarea(
             attrs={

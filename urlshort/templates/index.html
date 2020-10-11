@@ -7,6 +7,9 @@
         <tr>
             <th scope="col">URL</th>
             <th scope="col">URL shortcut</th>
+        {% if user.is_authenticated %}
+            <th scope="col">Delete</th>
+        {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -14,6 +17,13 @@
         <tr>
             <td><a href='{{ item.url }}'>{{ item.url }}</a></td>
             <td><a href='/{{ item.url_shortcut }}'>{{ item.url_shortcut }}</a></td>
+        {% if user.is_authenticated %}
+            <td>
+                <button type="button">
+                    <a href="{% url 'url_delete' pk=item.pk %}">Delete</a>
+                </button>
+            </td>
+        {% endif %}
             <!-- <td>{{ item.url_shortcut }}</td> -->
         </tr>
         {% endfor %}

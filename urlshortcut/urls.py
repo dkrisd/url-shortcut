@@ -18,9 +18,10 @@ from django.urls import path
 from urlshort import views
 
 urlpatterns = [
-    path('', views.all_url_shortcuts),
+    path('', views.all_url_shortcuts, name="index"),
     path('login', views.login_page),
     path('create-url', views.create_url),
+    path('<pk>/delete', views.UrlDelete.as_view(), name="url_delete"),
     path('admin', admin.site.urls),
     path('<shortcut>', views.redirect_shortcut),
 

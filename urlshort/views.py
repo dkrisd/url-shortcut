@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
 from django.contrib.auth import authenticate, login
 from .models import Url
 from .forms import LoginForm, CreateUrlForm
@@ -74,3 +76,8 @@ def create_url(request):
         'form' : form
     }
     return render(request, "create-url.html", context)
+
+
+class UrlDelete(DeleteView):
+    model = Url
+    success_url = reverse_lazy('index')
