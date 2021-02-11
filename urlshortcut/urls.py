@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from urlshort import views
+from urlshort import api
 
 urlpatterns = [
     path('', views.all_url_shortcuts, name="index"),
@@ -24,5 +25,6 @@ urlpatterns = [
     path('<pk>/delete', views.UrlDelete.as_view(), name="url_delete"),
     path('admin', admin.site.urls),
     path('<shortcut>', views.redirect_shortcut),
+    path('api/', include('urlshort.api.urls', namespace='api')),
 
 ]
